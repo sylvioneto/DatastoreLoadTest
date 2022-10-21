@@ -9,6 +9,8 @@ import concurrent.futures
 
 # Datastore details
 PROJECT_ID=os.getenv("PROJECT_ID")
+if not PROJECT_ID:
+    raise Exception("PROJECT_ID not set, please this env var.")
 KIND = "Order"
 NAMESPACE = "LoadTest"
 
@@ -22,7 +24,7 @@ def load_test():
     print("This script will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
 
     # create fake data
-    print("Creating batches with fake data...")
+    print("Creating batches of entities with fake data...")
     batches = []
     while len(batches) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
         batches.append(create_fake_entity(COMMIT_SIZE))
@@ -31,9 +33,7 @@ def load_test():
 
     start_time = datetime.now()
     print("Start time {}".format(start_time))
-
     poolBatches(batches)
-    
     end_time = datetime.now()
     print("End time {}".format(end_time))
     
@@ -45,14 +45,14 @@ def load_test():
 
 def poolBatches(batches):
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.map(load_batch_to_datastore, batches)
+        executor.map(load_entities_to_datastore, batches)
 
 
-def load_batch_to_datastore(batch):
+def load_entities_to_datastore(entities):
     client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
     upsert_list = []
-    for o in batch:
-        entity = datastore.Entity(client.key(KIND, o['order_id']))
+    for e in entities:
+        entity = datastore.Entity(client.key(KIND, e['order_id']))
         entity.update(o)
         upsert_list.append(entity)
     client.put_multi(upsert_list)

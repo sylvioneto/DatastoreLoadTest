@@ -3,32 +3,29 @@ from google.cloud import datastore
 import os
 
 # Datastore details
-PROJECT_ID=os.getenv("PROJECT_ID")
 KIND = "Order"
 NAMESPACE = "LoadTest"
+LIMIT=500
+
+PROJECT_ID=os.getenv("PROJECT_ID")
+if not PROJECT_ID:
+    raise Exception("PROJECT_ID not set, please this env var.")
 
 print("This script delete the test data")
-    
+
 # Instantiates a client
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
 query = client.query(kind=KIND)
 query.keys_only()
-keys = query.fetch()
+entities_to_delete = list(query.fetch(limit=LIMIT))
 
-delete_batch = []
-batch_count = 0
-keys_count = 0
-
-for k in keys:
-    delete_batch.append(k)
-    keys_count+=1
-    if keys_count % 500 == 0:
-        batch_count+=1
-        print("Deleting keys... Batch {}".format(batch_count))
-        client.delete_multi(delete_batch)
-        delete_batch = []
-    client.delete_multi(delete_batch)
+delete_count = 1
+while len(entities_to_delete) > 0:
+    print("Deleting keys... Batch {}".format(delete_count))
+    client.delete_multi(entities_to_delete)
+    entities_to_delete = list(query.fetch(limit=LIMIT))
+    delete_count+=1
 
 print(f"Done")
 

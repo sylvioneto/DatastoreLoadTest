@@ -14,7 +14,7 @@ export PROJECT_ID=<YOUR PROJECT ID>
 
 ### Run the load test
 ```
-python main.py
+python load_data.py
 ```
 
 ### Delete the loaded data
