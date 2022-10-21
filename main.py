@@ -13,7 +13,7 @@ KIND = "Order"
 NAMESPACE = "LoadTest"
 
 # Test details
-NUMBER_OF_ENTITIES = 100000
+NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
 
 
@@ -27,6 +27,8 @@ def load_test():
     while len(batches) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
         batches.append(create_fake_entity(COMMIT_SIZE))
     
+    print("Loading data to Datastore...")
+
     start_time = datetime.now()
     print("Start time {}".format(start_time))
 
