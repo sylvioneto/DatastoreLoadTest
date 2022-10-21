@@ -19,15 +19,14 @@ NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
 
 
+# Start the test
 def load_test():
-    
     print("This script will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
 
-    # create fake data
     print("Creating batches of entities with fake data...")
     batches = []
     while len(batches) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
-        batches.append(create_fake_entity(COMMIT_SIZE))
+        batches.append(create_fake_entities(COMMIT_SIZE))
     
     print("Loading data to Datastore...")
 
@@ -43,11 +42,13 @@ def load_test():
     print(f"Done")
 
 
+# split batches in the pool
 def poolBatches(batches):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(load_entities_to_datastore, batches)
 
 
+# load entities to Datastore
 def load_entities_to_datastore(entities):
     client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
     upsert_list = []
@@ -59,7 +60,8 @@ def load_entities_to_datastore(entities):
     print("Upsert done!")
 
 
-def create_fake_entity(num_of_entities):
+# return fake data for testing
+def create_fake_entities(num_of_entities):
     fake = Faker()
     entities = []
     for i in range(num_of_entities):
