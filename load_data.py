@@ -21,8 +21,6 @@ COMMIT_SIZE = 500
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
 # Start the test
-
-
 def load_test():
     print("This script will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
 
@@ -42,10 +40,8 @@ def load_test():
     print("End time {}".format(end_time))
 
     delta = end_time - start_time
-    print("Time taken to upsert {0} records was {1} seconds".format(
-        NUMBER_OF_ENTITIES, delta.total_seconds()))
-    print("Average of {0} records per second".format(
-        NUMBER_OF_ENTITIES/delta.total_seconds()))
+    print("Time taken to upsert {0} records was {1} seconds".format(NUMBER_OF_ENTITIES, delta.total_seconds()))
+    print("Average of {0} records per second".format(NUMBER_OF_ENTITIES/delta.total_seconds()))
     print(f"Done")
 
 
