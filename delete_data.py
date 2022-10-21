@@ -18,11 +18,12 @@ keys = query.fetch()
 
 delete_batch = []
 batch_count = 0
-count_keys = 0
+keys_count = 0
+
 for k in keys:
     delete_batch.append(k)
-    count_keys+=1
-    if count_keys % 500 == 0:
+    keys_count+=1
+    if keys_count % 500 == 0:
         batch_count+=1
         print("Deleting keys... Batch {}".format(batch_count))
         client.delete_multi(delete_batch)
