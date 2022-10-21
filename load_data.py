@@ -32,7 +32,7 @@ def load_test():
 
     start_time = datetime.now()
     print("Start time {}".format(start_time))
-    poolBatches(batches)
+    processBatches(batches)
     end_time = datetime.now()
     print("End time {}".format(end_time))
     
@@ -43,7 +43,7 @@ def load_test():
 
 
 # split batches in the pool
-def poolBatches(batches):
+def processBatches(batches):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(load_entities_to_datastore, batches)
 
