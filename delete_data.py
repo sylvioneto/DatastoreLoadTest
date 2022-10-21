@@ -1,9 +1,9 @@
 # Imports the Google Cloud client library
 from google.cloud import datastore
-
+import os
 
 # Datastore details
-PROJECT_ID="syl-sandbox"
+PROJECT_ID=os.getenv("PROJECT_ID")
 KIND = "Order"
 NAMESPACE = "LoadTest"
 

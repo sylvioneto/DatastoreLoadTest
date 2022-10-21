@@ -8,6 +8,8 @@ Datastore Load Test
 python3 -m virtualenv venv
 source venv/bin/activate
 pip install --upgrade -r requirements.txt
+
+export PROJECT_ID=<YOUR PROJECT ID>
 ```
 
 ### Run the load test

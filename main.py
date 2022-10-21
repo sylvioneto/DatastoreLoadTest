@@ -3,10 +3,10 @@ from google.cloud import datastore
 import uuid
 from datetime import datetime
 from faker import Faker
-
+import os
 
 # Datastore details
-PROJECT_ID="syl-sandbox"
+PROJECT_ID=os.getenv("PROJECT_ID")
 KIND = "Order"
 NAMESPACE = "LoadTest"
 
