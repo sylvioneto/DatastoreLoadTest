@@ -17,7 +17,7 @@ COMMIT_SIZE = 500
 
 def load_test():
     
-    print("This test will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
+    print("This script will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
 
     # create fake data
     batches = []

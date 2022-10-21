@@ -7,6 +7,7 @@ PROJECT_ID=os.getenv("PROJECT_ID")
 KIND = "Order"
 NAMESPACE = "LoadTest"
 
+print("This script delete the test data")
     
 # Instantiates a client
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
@@ -17,10 +18,11 @@ keys = query.fetch()
 
 delete_batch = []
 batch_count = 0
-
+count_keys = 0
 for k in keys:
     delete_batch.append(k)
-    if len(delete_batch) % 500 == 0:
+    count_keys+=1
+    if count_keys % 500 == 0:
         batch_count+=1
         print("Deleting keys... Batch {}".format(batch_count))
         client.delete_multi(delete_batch)
