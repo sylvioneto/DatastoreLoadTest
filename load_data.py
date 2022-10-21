@@ -18,6 +18,8 @@ NAMESPACE = "LoadTest"
 NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
 MAX_WORKERS=os.getenv("MAX_WORKERS")
+if MAX_WORKERS:
+    MAX_WORKERS = int(MAX_WORKERS)
 
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
