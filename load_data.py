@@ -17,6 +17,7 @@ NAMESPACE = "LoadTest"
 # Test details
 NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
+MAX_WORKERS = 50
 
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
@@ -47,7 +48,7 @@ def load_test():
 
 # split batches in the pool
 def processBatches(batches_of_entities):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         executor.map(client.put_multi, batches_of_entities)
 
 
@@ -56,8 +57,10 @@ def create_fake_entities(num_of_entities):
     fake = Faker()
     entities = []
     for i in range(num_of_entities):
-        entity = datastore.Entity(client.key(KIND, str(uuid.uuid4())), exclude_from_indexes=(
-            "customer_email", "phone_number", "user_agent", "create_time"))
+        entity = datastore.Entity(
+            client.key(KIND, str(uuid.uuid4())),
+            exclude_from_indexes=("customer_email", "phone_number", "user_agent", "create_time")
+        )
         entity.update({
             "customer_email": fake.free_email(),
             "phone_number": fake.phone_number(),
