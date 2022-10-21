@@ -57,7 +57,6 @@ def load_entities_to_datastore(entities):
         entity.update(e)
         upsert_list.append(entity)
     client.put_multi(upsert_list)
-    print("Upsert done!")
 
 
 # return fake data for testing
