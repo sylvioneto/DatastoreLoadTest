@@ -7,14 +7,18 @@ from faker import Faker
 
 # Datastore details
 PROJECT_ID="syl-sandbox"
-KIND = "Task"
+KIND = "Order"
 NAMESPACE = "LoadTest"
 
-NUMBER_OF_ENTITIES = 1000
+# Test details
+NUMBER_OF_ENTITIES = 10000
 COMMIT_SIZE = 500
+
 
 def load_test():
     
+    print("This test will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
+
     # create fake data
     batches = []
     while len(batches) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
@@ -28,7 +32,7 @@ def load_test():
 
     batch_count = 0
     for b in batches:
-        batch_count=+1
+        batch_count+=1
         tasks = []
         for t in b:
             task = datastore.Entity(client.key(KIND, t['order_id']))
