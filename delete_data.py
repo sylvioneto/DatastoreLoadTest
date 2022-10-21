@@ -13,20 +13,19 @@ client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
 query = client.query(kind=KIND)
 query.keys_only()
-batch_count = 0
-
 keys = query.fetch()
 
-keys_to_delete = []
+delete_batch = []
+batch_count = 0
 
-while keys.max_results is not None:
-    keys_to_delete.append(keys.__next__)
-    if i+1 % 500:
-        client.delete_multi(keys_to_delete)
+for k in keys:
+    delete_batch.append(k)
+    if len(delete_batch) % 500 == 0:
         batch_count+=1
         print("Deleting keys... Batch {}".format(batch_count))
-        keys_to_delete = []
-
+        client.delete_multi(delete_batch)
+        delete_batch = []
+    client.delete_multi(delete_batch)
 
 print(f"Done")
 
