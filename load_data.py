@@ -17,7 +17,7 @@ NAMESPACE = "LoadTest"
 # Test details
 NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
-MAX_WORKERS = 50
+MAX_WORKERS=os.getenv("MAX_WORKERS")
 
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
@@ -30,7 +30,7 @@ def load_test():
     while len(batches_of_entities) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
         batches_of_entities.append(create_fake_entities(COMMIT_SIZE))
 
-    print("Loading data to Datastore...")
+    print("Loading data to Datastore with {} workers", MAX_WORKERS)
 
     start_time = datetime.now()
     print("Start time {}".format(start_time))
