@@ -18,6 +18,7 @@ NAMESPACE = "LoadTest"
 NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
 
+client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
 # Start the test
 def load_test():
@@ -50,13 +51,7 @@ def processBatches(batches):
 
 # load entities to Datastore
 def load_entities_to_datastore(entities):
-    client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
-    upsert_list = []
-    for e in entities:
-        entity = datastore.Entity(client.key(KIND, e['order_id']))
-        entity.update(e)
-        upsert_list.append(entity)
-    client.put_multi(upsert_list)
+    client.put_multi(entities)
 
 
 # return fake data for testing
@@ -64,14 +59,14 @@ def create_fake_entities(num_of_entities):
     fake = Faker()
     entities = []
     for i in range(num_of_entities):
-        order = {
-            "order_id": str(uuid.uuid1()),
+        entity = datastore.Entity(client.key(KIND), str(uuid.uuid4()))
+        entity.update({
             "customer_email": fake.free_email(),
             "phone_number": fake.phone_number(),
             "user_agent": fake.chrome(),
             "create_time": datetime.now()
-        }
-        entities.append(order)
+        })
+        entities.append(entity)
     return entities
 
 
