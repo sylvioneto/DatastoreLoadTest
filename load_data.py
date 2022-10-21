@@ -30,7 +30,7 @@ def load_test():
     while len(batches_of_entities) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
         batches_of_entities.append(create_fake_entities(COMMIT_SIZE))
 
-    print("Loading data to Datastore with {} workers", MAX_WORKERS)
+    print("Loading data to Datastore with {} workers".format(MAX_WORKERS))
 
     start_time = datetime.now()
     print("Start time {}".format(start_time))
