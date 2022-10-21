@@ -3,8 +3,8 @@ from google.cloud import datastore
 import os
 
 # Datastore details
-KIND = "Order"
-NAMESPACE = "LoadTest"
+KIND = "stress"
+NAMESPACE = "colmeia"
 LIMIT=500
 
 PROJECT_ID=os.getenv("PROJECT_ID")
