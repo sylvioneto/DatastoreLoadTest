@@ -44,7 +44,7 @@ def load_test():
 
 
 def poolBatches(batches):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(load_batch_to_datastore, batches)
 
 
