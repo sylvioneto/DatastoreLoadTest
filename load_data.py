@@ -54,7 +54,7 @@ def load_entities_to_datastore(entities):
     upsert_list = []
     for e in entities:
         entity = datastore.Entity(client.key(KIND, e['order_id']))
-        entity.update(o)
+        entity.update(e)
         upsert_list.append(entity)
     client.put_multi(upsert_list)
     print("Upsert done!")
