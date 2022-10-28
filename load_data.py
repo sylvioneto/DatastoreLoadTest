@@ -1,7 +1,7 @@
 # Imports the Google Cloud client library
 from google.cloud import datastore
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from faker import Faker
 import os
 import concurrent.futures
@@ -68,7 +68,7 @@ def create_fake_entities(num_of_entities):
             "phoneNumber": fake.phone_number(),
             "userAgent": fake.chrome(),
             "createAt": datetime.now(),
-            "expireAt": datetime.now() + datetime.timedelta(days=7)
+            "expireAt": datetime.now() + timedelta(days=3)
         })
         entities.append(entity)
     return entities
