@@ -13,9 +13,7 @@ if not PROJECT_ID:
 
 print("This script delete the test data")
 
-# Instantiates a client
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
-
 query = client.query(kind=KIND)
 query.keys_only()
 
@@ -30,4 +28,3 @@ while true:
 
 
 print(f"Done")
-
