@@ -18,14 +18,16 @@ client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
 query = client.query(kind=KIND)
 query.keys_only()
-entities_to_delete = list(query.fetch(limit=LIMIT))
 
 delete_count = 1
-while len(entities_to_delete) > 0:
+while true:
+    entities_to_delete = list(query.fetch(limit=LIMIT))
+    if len(entities_to_delete) == 0:
+        break
+    delete_count+=1
     print("Deleting keys... Batch {}".format(delete_count))
     client.delete_multi(entities_to_delete)
-    entities_to_delete = list(query.fetch(limit=LIMIT))
-    delete_count+=1
+
 
 print(f"Done")
 
