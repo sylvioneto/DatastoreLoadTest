@@ -24,5 +24,5 @@ python load_data.py
 
 ### Delete the loaded data
 ```
-python delete_date.py
+python delete_data.py
 ```
