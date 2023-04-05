@@ -8,15 +8,16 @@ import concurrent.futures
 
 
 # Datastore details
-PROJECT_ID = os.getenv("PROJECT_ID")
-if not PROJECT_ID:
-    raise Exception("PROJECT_ID not set, please this env var.")
 KIND = "MyOrders"
 NAMESPACE = "LoadTest"
 
 # Test details
 NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
+
+PROJECT_ID = os.getenv("PROJECT_ID")
+if not PROJECT_ID:
+    raise Exception("PROJECT_ID not set, please this env var.")
 
 # Start the test
 def load_test():
