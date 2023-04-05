@@ -3,7 +3,7 @@ from google.cloud import datastore
 import os
 
 # Datastore details
-KIND = "Order"
+KIND = "MyOrders"
 NAMESPACE = "LoadTest"
 LIMIT=500
 

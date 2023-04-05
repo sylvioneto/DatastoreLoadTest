@@ -8,20 +8,16 @@ import concurrent.futures
 
 
 # Datastore details
-PROJECT_ID = os.getenv("PROJECT_ID")
-if not PROJECT_ID:
-    raise Exception("PROJECT_ID not set, please this env var.")
-KIND = "Order"
+KIND = "MyOrders"
 NAMESPACE = "LoadTest"
 
 # Test details
 NUMBER_OF_ENTITIES = 50000
 COMMIT_SIZE = 500
-MAX_WORKERS=os.getenv("MAX_WORKERS")
-if MAX_WORKERS:
-    MAX_WORKERS = int(MAX_WORKERS)
 
-client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
+PROJECT_ID = os.getenv("PROJECT_ID")
+if not PROJECT_ID:
+    raise Exception("PROJECT_ID not set, please this env var.")
 
 # Start the test
 def load_test():
@@ -32,12 +28,13 @@ def load_test():
     while len(batches_of_entities) < (NUMBER_OF_ENTITIES/COMMIT_SIZE):
         batches_of_entities.append(create_fake_entities(COMMIT_SIZE))
 
-    print("Loading data to Datastore with {} workers".format(MAX_WORKERS))
+    print("Loading data into Datastore...")
 
     start_time = datetime.now()
     print("Start time {}".format(start_time))
 
-    processBatches(batches_of_entities)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(insertEntities, batches_of_entities)
 
     end_time = datetime.now()
     print("End time {}".format(end_time))
@@ -48,14 +45,14 @@ def load_test():
     print(f"Done")
 
 
-# split batches in the pool
-def processBatches(batches_of_entities):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        executor.map(client.put_multi, batches_of_entities)
+def insertEntities(entities):
+    client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
+    client.put_multi(entities)
 
 
 # return fake data for testing
 def create_fake_entities(num_of_entities):
+    client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
     fake = Faker()
     entities = []
     for i in range(num_of_entities):
