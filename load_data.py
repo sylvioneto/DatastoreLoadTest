@@ -56,10 +56,8 @@ def create_fake_entities(num_of_entities):
     fake = Faker()
     entities = []
     for i in range(num_of_entities):
-        entity = datastore.Entity(
-            client.key(KIND, str(uuid.uuid4())),
-            exclude_from_indexes=("customerEmail", "phoneNumber", "userAgent", "createAt", "expireAt")
-        )
+        doc_key = str(uuid.uuid4())
+        entity = datastore.Entity(client.key(KIND, doc_key))
         entity.update({
             "customerEmail": fake.free_email(),
             "phoneNumber": fake.phone_number(),
