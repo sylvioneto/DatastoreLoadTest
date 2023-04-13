@@ -19,6 +19,8 @@ PROJECT_ID = os.getenv("PROJECT_ID")
 if not PROJECT_ID:
     raise Exception("PROJECT_ID not set, please this env var.")
 
+client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
+
 # Start the test
 def load_test():
     print("This script will upsert {} records to Datastore".format(NUMBER_OF_ENTITIES))
@@ -46,13 +48,11 @@ def load_test():
 
 
 def insertEntities(entities):
-    client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
     client.put_multi(entities)
 
 
 # return fake data for testing
-def create_fake_entities(num_of_entities):
-    client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
+def create_fake_entities(num_of_entities):   
     fake = Faker()
     entities = []
     for i in range(num_of_entities):
