@@ -12,12 +12,13 @@ KIND = "MyOrders"
 NAMESPACE = "LoadTest"
 
 # Test details
-NUMBER_OF_ENTITIES = 50000
+NUMBER_OF_ENTITIES = 1000
 COMMIT_SIZE = 500
 
 PROJECT_ID = os.getenv("PROJECT_ID")
 if not PROJECT_ID:
     raise Exception("PROJECT_ID not set, please this env var.")
+DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f+%z"
 
 client = datastore.Client(project=PROJECT_ID, namespace=NAMESPACE)
 
@@ -35,8 +36,8 @@ def load_test():
     start_time = datetime.now()
     print("Start time {}".format(start_time))
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.map(insertEntities, batches_of_entities)
+    # with concurrent.futures.ThreadPoolExecutor() as executor:
+    #     executor.map(insertEntities, batches_of_entities)
 
     end_time = datetime.now()
     print("End time {}".format(end_time))
@@ -62,9 +63,10 @@ def create_fake_entities(num_of_entities):
             "customerEmail": fake.free_email(),
             "phoneNumber": fake.phone_number(),
             "userAgent": fake.chrome(),
-            "createAt": datetime.now(),
-            "expireAt": datetime.now() + timedelta(days=3)
+            "createAt": datetime.now().strftime(DATETIME_FORMAT),
+            "expireAt": (datetime.now() + timedelta(days=3)).strftime(DATETIME_FORMAT)
         })
+        print(entity)
         entities.append(entity)
     return entities
 
