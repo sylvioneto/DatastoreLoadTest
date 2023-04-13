@@ -12,7 +12,7 @@ KIND = "MyOrders"
 NAMESPACE = "LoadTest"
 
 # Test details
-NUMBER_OF_ENTITIES = 1000
+NUMBER_OF_ENTITIES = 10000
 COMMIT_SIZE = 500
 
 PROJECT_ID = os.getenv("PROJECT_ID")
