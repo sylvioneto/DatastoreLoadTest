@@ -36,8 +36,8 @@ def load_test():
     start_time = datetime.now()
     print("Start time {}".format(start_time))
 
-    # with concurrent.futures.ThreadPoolExecutor() as executor:
-    #     executor.map(insertEntities, batches_of_entities)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(insertEntities, batches_of_entities)
 
     end_time = datetime.now()
     print("End time {}".format(end_time))
@@ -66,7 +66,6 @@ def create_fake_entities(num_of_entities):
             "createAt": datetime.now().strftime(DATETIME_FORMAT),
             "expireAt": (datetime.now() + timedelta(days=3)).strftime(DATETIME_FORMAT)
         })
-        print(entity)
         entities.append(entity)
     return entities
 
